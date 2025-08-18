@@ -17,12 +17,9 @@ app.get('/', (req, res) => {
   res.json({
     message: 'File Upload API Server',
     endpoints: {
-      'POST /api/upload/single': 'Upload single file',
-      'POST /api/upload/multiple': 'Upload multiple files (max 5)',
+      'POST /api/upload/': 'Upload single file',
       'GET /api/upload/list': 'List all uploaded files',
       'GET /api/upload/info/:filename': 'Get specific file information',
-      'GET /api/upload/download/:filename': 'Download specific file',
-      'DELETE /api/upload/delete/:filename': 'Delete specific file'
     }
   });
 });

@@ -21,13 +21,15 @@ const storage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
   // Allow only specific file types
   const allowedTypes = /jpeg|jpg|png|gif|pdf|txt|doc|docx/;
+  const allowedMimeTypes = /image\/(jpeg|jpg|png|gif)|application\/(pdf|msword|vnd\.openxmlformats-officedocument\.wordprocessingml\.document)|text\/plain/;
+  
   const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = allowedTypes.test(file.mimetype);
+  const mimetype = allowedMimeTypes.test(file.mimetype);
 
   if (mimetype && extname) {
     return cb(null, true);
   } else {
-    cb(new Error('Invalid file type. Only JPEG, PNG, GIF, PDF, TXT, DOC, DOCX files are allowed.'));
+    cb(new Error(`Invalid file type. File: ${file.originalname}, MIME: ${file.mimetype}. Only JPEG, PNG, GIF, PDF, TXT, DOC, DOCX files are allowed.`));
   }
 };
 

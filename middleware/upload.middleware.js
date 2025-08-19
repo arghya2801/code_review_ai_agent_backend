@@ -19,17 +19,19 @@ const storage = multer.diskStorage({
 
 // File filter for security
 const fileFilter = (req, file, cb) => {
-  // Allow only specific file types
-  const allowedTypes = /jpeg|jpg|png|gif|pdf|txt|doc|docx/;
-  const allowedMimeTypes = /image\/(jpeg|jpg|png|gif)|application\/(pdf|msword|vnd\.openxmlformats-officedocument\.wordprocessingml\.document)|text\/plain/;
+  // Allow programming files and common document types
+  const allowedExtensions = /\.(js|jsx|ts|tsx|py|java|cpp|c|cs|php|rb|go|rs|html|css|scss|sass|less|vue|svelte|sql|json|xml|yaml|yml|md|txt|sh|bat|ps1|r|scala|kt|swift|dart|pl|lua|m|h|hpp|cc|cxx|f90|f95|f03|f08|vb|pas|asm|s|clj|hs|ml|fs|elm|ex|exs|erl|jl|nim|zig|v|crystal|d|groovy|gradle|makefile|dockerfile|cmake|cfg|conf|ini|toml|properties|gitignore|gitattributes|readme|license|changelog)$/i;
   
-  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = allowedMimeTypes.test(file.mimetype);
+  // More comprehensive MIME type checking for programming files
+  const allowedMimeTypes = /^(text\/|application\/json|application\/javascript|application\/typescript|application\/xml|application\/x-|image\/(jpeg|jpg|png|gif)|application\/(pdf|msword|vnd\.openxmlformats-officedocument\.wordprocessingml\.document)).*$/;
+  
+  const extname = allowedExtensions.test(file.originalname);
+  const mimetype = allowedMimeTypes.test(file.mimetype) || file.mimetype === 'application/octet-stream';
 
-  if (mimetype && extname) {
+  if (extname || mimetype) {
     return cb(null, true);
   } else {
-    cb(new Error(`Invalid file type. File: ${file.originalname}, MIME: ${file.mimetype}. Only JPEG, PNG, GIF, PDF, TXT, DOC, DOCX files are allowed.`));
+    cb(new Error(`Invalid file type. File: ${file.originalname}, MIME: ${file.mimetype}. Only programming files and common document types are allowed.`));
   }
 };
 

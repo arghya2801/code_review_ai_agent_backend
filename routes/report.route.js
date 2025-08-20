@@ -2,7 +2,9 @@ import express from 'express';
 import {
   generateReportFromFile,
   generateReportFromCode,
-  getReportFormat
+  getReportFormat,
+  getReportByFilename,
+  listReports
 } from '../controllers/report.controller.js';
 
 const router = express.Router();
@@ -15,5 +17,11 @@ router.post('/code', generateReportFromCode);
 
 // Get report format template
 router.get('/format', getReportFormat);
+
+// Get existing report by filename
+router.get('/file/:filename', getReportByFilename);
+
+// List all available reports
+router.get('/list', listReports);
 
 export default router;

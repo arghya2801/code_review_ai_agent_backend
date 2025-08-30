@@ -28,7 +28,7 @@ class GeminiService {
     }
   }
 
-  buildPrompt(codeContent, additionalContext) {
+  buildPrompt(codeContent, language, additionalContext) {
     return `
 You are an expert technical interviewer and code reviewer. Please analyze the following code and generate a comprehensive coding interview report using the exact format provided below. Add the code snippets where improvement could be made as well.
 

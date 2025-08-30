@@ -1,6 +1,7 @@
 /node_modules
 /uploads
 /reports
+/tested_repo
 
 .env
 

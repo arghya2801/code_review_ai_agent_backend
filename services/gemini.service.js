@@ -12,11 +12,11 @@ class GeminiService {
   async generateReport(codeContent, additionalContext = '') {
     try {
       const prompt = this.buildPrompt(codeContent, additionalContext);
-      
+
       const result = await this.model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();
-      
+
       return {
         success: true,
         report: text,
@@ -41,77 +41,78 @@ ${codeContent}
 ${additionalContext || 'No additional context provided.'}
 
 **Required Report Format:**
-Please generate a report following this EXACT structure and format:
 
-# AI Coding Interview Report
+You are an expert code evaluator. Analyze the following ${language} code and provide a comprehensive evaluation with scores.
 
-## 📝 Overview
+CODE TO EVALUATE:
+\`\`\`${language}
+${codeContent}
+\`\`\`
 
-This report provides a comprehensive evaluation of the candidate's coding interview performance. It includes detailed assessments of technical skills, problem-solving abilities, and communication effectiveness. Below you'll find a structured analysis with scores, specific strengths, areas for improvement, and a final recommendation.
+Please provide your evaluation in the following EXACT format:
 
----
+# 🔍 Code Evaluation Report
 
 ## 📊 Score Summary
+**Overall Score: X/100**
 
-| Skill/Area          | Max Score | Candidate Score | Rating    |
-|---------------------|-----------|----------------|-----------|
-| Problem Solving     | 10        | [SCORE]        | [RATING]  |
-| Code Quality        | 10        | [SCORE]        | [RATING]  |
-| Algorithmic Thinking| 10        | [SCORE]        | [RATING]  |
-| Debugging           | 10        | [SCORE]        | [RATING]  |
-| Communication       | 10        | [SCORE]        | [RATING]  |
+### Detailed Breakdown:
+| Criteria | Score | Max | Grade |
+|----------|-------|-----|-------|
+| 📝 Code Quality | X/20 | 20 | A/B/C/D/F |
+| ⚡ Algorithm Efficiency | X/20 | 20 | A/B/C/D/F |
+| ✅ Best Practices | X/20 | 20 | A/B/C/D/F |
+| 🛡️ Error Handling | X/15 | 15 | A/B/C/D/F |
+| 📚 Documentation | X/15 | 15 | A/B/C/D/F |
+| 🔧 Maintainability | X/10 | 10 | A/B/C/D/F |
 
-**Total Score:** [TOTAL]/50  
-**Result:** [OVERALL_RESULT]
+**Final Grade: [A+/A/B+/B/C+/C/D/F]**
 
 ---
 
 ## ✅ Strengths
+- **[Category]**: Brief description
+- **[Category]**: Brief description
+- **[Category]**: Brief description
 
-[List 3-5 specific strengths based on the code analysis]
+## 🔄 Areas for Improvement  
+- **[Category]**: Specific issue and why it matters
+- **[Category]**: Specific issue and why it matters
+- **[Category]**: Specific issue and why it matters
 
----
+## 💡 Recommendations
+### High Priority:
+1. **[Action]**: Detailed explanation with code example if applicable
+2. **[Action]**: Detailed explanation with code example if applicable
 
-## 🔄 Improvements & Suggestions
+### Medium Priority:
+1. **[Action]**: Brief explanation
+2. **[Action]**: Brief explanation
 
-[List 3-5 specific areas for improvement with actionable suggestions]
-
----
-
-## 💬 Detailed Feedback
-
-**Coding Style:**  
-[Detailed analysis of code readability, formatting, and best practices]
-
-**Approach:**  
-[Analysis of the approach taken, logic applied, and creativity]
-
-**Mistakes/Errors:**  
-[Detailed analysis of any mistakes or misconceptions]
-
-**Collaboration/Communication:**  
-[Assessment based on code comments, variable naming, and overall clarity]
+### Low Priority:
+1. **[Action]**: Brief explanation
 
 ---
 
-**Instructions:**
-1. Replace all [SCORE] placeholders with actual numbers (0-10)
-2. Replace [RATING] with: Excellent (9-10), Good (7-8), Fair (5-6), Poor (0-4)
-3. Replace [TOTAL] with the sum of all scores
-4. Replace [OVERALL_RESULT] with: Strong (40-50), Moderate (25-39), Needs Improvement (0-24)
-5. Provide specific, actionable feedback based on the actual code
-6. Be constructive and professional in your assessment
-7. Focus on technical accuracy, code quality, and best practices
+## 📈 Performance Analysis
+- **Time Complexity**: O(?)
+- **Space Complexity**: O(?)
+- **Scalability**: [Excellent/Good/Fair/Poor]
+
+## 🎯 Summary
+Brief 2-3 sentence summary of the code's overall quality and main takeaways.
+
+Keep your feedback constructive, specific, and actionable. Use concrete examples when possible.
 `;
   }
 
   async analyzeFileContent(fileContent, filename, problemStatement = '') {
     try {
       const contextualPrompt = `
-File: ${filename}
-Problem Statement: ${problemStatement || 'Not provided'}
-Code Content: ${fileContent}
-      `;
+File: ${ filename }
+Problem Statement: ${ problemStatement || 'Not provided' }
+Code Content: ${ fileContent }
+`;
       
       return await this.generateReport(fileContent, contextualPrompt);
     } catch (error) {
